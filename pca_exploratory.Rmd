@@ -1,0 +1,30 @@
+---
+title: "PCA exploratory"
+output: html_document
+---
+
+```{r load}
+load('~/Dropbox/Yashar_Jose_Mahsa/Springleaf_Marketing_Response/raw_data/train_springleaf.Rda')
+train$target <- factor(train$target)
+train[is.na(train)] <- 0 # quick fix
+# Remove constant variables
+train <- train[, !sapply(train, function(x) all(x == x[1]))]
+train$ID <- NULL
+```
+
+Try a PCA of only the numerical features. Careful: many of them are actually integers.
+
+```{r pcanumerical}
+pca1 <- prcomp(train[, sapply(train, class) %in% c("numeric", "integer")], scale = TRUE)
+# Look at the variance
+varexp <- cumsum(pca1$sdev^2 / sum(pca1$sdev^2))
+plot(varexp)
+print(varexp[1:5])
+plot(pca1$x[, 1], pca1$x[, 2], col = train$target, pch = 19)
+```
+
+With 17 components we have 50 % of the total variance. Let's build a dataset with that plus the factors and let's check some classification algorithm.
+
+```{r test}
+train2 <- cbind(pca1$x[, 1:17], train[, sapply(train, class) == "factor"])
+```
