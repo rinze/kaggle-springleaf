@@ -8,6 +8,8 @@ vars <- lapply(2:(ncol(train) - 1), function(i) {
     x <- train[, i]
     a <- randomForest(data.frame(x), train$target)
     err <- mean(a$err.rate[, 1])
-    cat(sprintf("Error for %s: %.5f\n", names(train)[i], err))
-    return(data.frame(var = names(train)[i], err = err))
+    res <- data.frame(var = names(train)[i], err = err,
+                      c1 = a$confusion[1, 3], c2 = a$confusion[2, 3])
+    print(res)
+    return(res)
 })
