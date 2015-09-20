@@ -5,6 +5,10 @@ load('C:/Users/jmmateos/Dropbox/Yashar_Jose_Mahsa/Springleaf_Marketing_Response/
 train$target <- factor(train$target)
 train[is.na(train)] <- -1 # quick fix
 
-a <- earth(target ~ ., train, degree = 2, nfold = 10, trace = 0)
-varimp <- evimp(a)
-print(varimp)
+varimps <- lapply(1:200, function(i) {
+    t1 <- train[sample(20000), ]
+    a <- earth(target ~ ., t1, degree = 2, nfold = 10, trace = 0)
+    varimp <- evimp(a)
+    print(varimp)
+    return(varimp)
+})
