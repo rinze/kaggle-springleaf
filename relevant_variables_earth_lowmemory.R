@@ -22,8 +22,13 @@ varimps <- lapply(1:nsamples, function(i) {
     for (f in feature.names) {
       if (class(train[[f]])=="character") {
         levels <- unique(c(train[[f]], test[[f]]))
+        if (length(levels) > 1) {
         train[[f]] <- as.integer(factor(train[[f]], levels=levels))
         test[[f]]  <- as.integer(factor(test[[f]],  levels=levels))
+        } else {
+        train[[f]] <- NULL
+        test[[f]] <- NULL
+        }
       }
     }
 
