@@ -3,6 +3,9 @@
 library(caret)
 library(caretEnsemble)
 
+# Make results reproducible
+set.seed(2015)
+
 #### LOAD data ####
 load('C:/Users/jmmateos/Dropbox/Yashar_Jose_Mahsa/Springleaf_Marketing_Response/raw_data/train_springleaf.Rda')
 train$target <- factor(train$target, labels = c("Negative", "Positive"))
